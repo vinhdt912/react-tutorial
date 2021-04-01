@@ -1,20 +1,26 @@
 import React, { useState } from "react";
+import { Route, Switch } from "react-router";
+import { BrowserRouter } from "react-router-dom";
+import "./App.scss";
+import LoginPage from "./pages/LoginPage.jsx";
+import ProfilePage from "./pages/ProfilePage";
 
-function App() {
-  function validationForm() {
-    const re = /\S+@\S+\.\S+/;
-    //Kiểm tra email
-    if (re.test(email)) return false;
-    return true;
-  }
-  const [email, setEmail] = useState({});
+function App(props) {
+  const [token, setToken] = useState();
+  // if (!token) {
+  //   return <LoginPage setToken={setToken} />;
+  // }
+  // return (
+  //   <div className="container">
+  //     <BrowserRouter>
+  //       <Switch>
+  //         <Route path="/" component={ProfilePage} />
+  //       </Switch>
+  //     </BrowserRouter>
+  //   </div>
+  // );
 
-  const changeInputValue = (event) => setEmail(event.target.value);
-  return (
-    <div>
-      <input type="email" onChange={(event) => changeInputValue(event)} />
-    </div>
-  );
+  return <ProfilePage />;
 }
 
 export default App;
