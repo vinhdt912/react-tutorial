@@ -6,8 +6,8 @@ function ValidateInput({
   type,
   required,
   handleChangeInput,
+  valueDefault,
 }) {
-  const [valid, setValid] = useState("form-control");
   //   ? "form-control is-valid" : "form-control is-invalid"
 
   return (
@@ -16,13 +16,15 @@ function ValidateInput({
         {labelValue}
       </label>
       <input
-        className={valid}
+        className="form-control"
         onChange={handleChangeInput}
         type={type}
         id={labelValue}
         placeholder={placeholder}
         required={required}
+        defaultValue={valueDefault}
       />
+      <br />
     </div>
   );
 }

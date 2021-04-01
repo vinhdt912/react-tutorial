@@ -1,7 +1,6 @@
-import { MDBInput } from "mdbreact";
 import React from "react";
 import "../../assets/styles/ProfilePage.scss";
-
+import ValidateInput from "./ValidateInput";
 
 function SpecInput({ inputList, setInputList }) {
   const addNewInput = (array) => {
@@ -22,13 +21,13 @@ function SpecInput({ inputList, setInputList }) {
       {inputList.map((input) => {
         return (
           <div className="beneficial-input" key={input.id}>
-            <MDBInput
-              className="beneficial"
-              label="Beneficial ... "
+            <ValidateInput
+              placeholder="Beneficial"
+              labelValue="Beneficial"
               type="text"
-              required
+              required={true}
               valueDefault={input.value}
-              onChange={(e) => {
+              handleChangeInput={(e) => {
                 const newInput = {
                   id: input.id,
                   value: e.target.value,

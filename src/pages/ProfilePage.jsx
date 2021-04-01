@@ -42,7 +42,7 @@ function ProfilePage() {
           magnam quidem. Culpa amet praesentium ullam laboriosam at laudantium,
           magnam aperiam?
         </p>
-        <form>
+        <form onSubmit={() => console.log("Submit")}>
           <MDBRow>
             <MDBCol md="6" xl="6">
               <ValidateInput
@@ -52,18 +52,34 @@ function ProfilePage() {
                 required={true}
                 handleChangeInput={(e) => handleInput(e)}
               />
-              <MDBInput label="DBA" type="text" required />
-              <MDBInput label="Tax ID" type="text" required />
-              <MDBInput
-                label="Website"
-                valueDefault="http://"
+              <ValidateInput
+                placeholder="DBA"
+                labelValue="DBA"
                 type="text"
-                required
+                required={true}
+                handleChangeInput={(e) => handleInput(e)}
+              />
+              <ValidateInput
+                placeholder="Tax ID"
+                labelValue="Tax ID"
+                type="text"
+                required={true}
+                handleChangeInput={(e) => handleInput(e)}
+              />
+              <ValidateInput
+                placeholder="http://"
+                labelValue="Tax ID"
+                valueDefault="http://"
+                type="url"
+                required={true}
+                handleChangeInput={(e) => handleInput(e)}
               />
               <label>Regulatory AML</label>
               <Select options={options} required />
+              <br />
               <label>Regulatory Securities</label>
               <Select options={options} required />
+              <br />
               <SpecInput inputList={inputList} setInputList={setInputList} />
             </MDBCol>
             <MDBCol md="6">
@@ -73,22 +89,49 @@ function ProfilePage() {
                 value={phone}
                 onChange={(phone) => setPhone(phone)}
               />
-              <MDBInput label="Company E-mail" type="email" required />
+              <br />
+              <ValidateInput
+                placeholder="Company E-mail"
+                labelValue="Company E-mail"
+                type="email"
+                required={true}
+                handleChangeInput={(e) => handleInput(e)}
+              />
+              <br />
               <strong>
                 <h2>ADDRESS</h2>
               </strong>
+              <br />
               <label>Country</label>
               <Select options={options} required />
+              <br />
               <label>Region</label>
               <Select options={options} required />
-              <MDBInput label="City" type="text" required />
-              <MDBInput
-                label="Address Line 1 (required)"
+              <br />
+              <ValidateInput
+                placeholder="Ha Noi"
+                labelValue="City"
                 type="text"
-                required
+                required={true}
+                handleChangeInput={(e) => handleInput(e)}
               />
-              <MDBInput label="Address Line 2" type="text" />
-              <MDBBtn className="submit-button">Submit</MDBBtn>
+              <ValidateInput
+                placeholder="Street, ..."
+                labelValue="Address Line 1 (required)"
+                type="text"
+                required={true}
+                handleChangeInput={(e) => handleInput(e)}
+              />
+              <ValidateInput
+                placeholder="Street, ..."
+                labelValue="Address Line 2"
+                type="text"
+                required={false}
+                handleChangeInput={(e) => handleInput(e)}
+              />
+              <MDBBtn className="submit-button" type="submit">
+                Submit
+              </MDBBtn>
             </MDBCol>
           </MDBRow>
         </form>

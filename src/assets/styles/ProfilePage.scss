@@ -27,15 +27,15 @@ $width-button: 50px;
 .button-add-input {
   font-size: 20px;
   position: absolute;
-  right: 0;
-  bottom: 20%;
+  bottom: 33%;
+  right: 5px;
   color: rgb(85, 85, 255);
   cursor: pointer;
 }
 .button-remove-input {
   font-size: 20px;
+  bottom: 33%;
   position: absolute;
-  bottom: 20%;
   right: 30px;
   color: rgb(255, 94, 94);
   cursor: pointer;
