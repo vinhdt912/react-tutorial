@@ -5,22 +5,21 @@ import "./App.scss";
 import LoginPage from "./pages/LoginPage.jsx";
 import ProfilePage from "./pages/ProfilePage";
 
-function App(props) {
+function App() {
   const [token, setToken] = useState();
-  // if (!token) {
-  //   return <LoginPage setToken={setToken} />;
-  // }
-  // return (
-  //   <div className="container">
-  //     <BrowserRouter>
-  //       <Switch>
-  //         <Route path="/" component={ProfilePage} />
-  //       </Switch>
-  //     </BrowserRouter>
-  //   </div>
-  // );
+  if (token) {
+    return <LoginPage setToken={setToken} />;
+  }
+  return (
+    <div className="container">
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" component={ProfilePage} />
+        </Switch>
+      </BrowserRouter>
+    </div>
+  );
 
-  return <ProfilePage />;
 }
 
 export default App;

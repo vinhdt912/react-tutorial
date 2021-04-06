@@ -1,8 +1,18 @@
 import React from "react";
-import "../../assets/styles/ProfilePage.scss";
-import ValidateInput from "./ValidateInput";
+import { propTypes } from "react-bootstrap/esm/Image";
+import ValidateInput from "../Common/ValidateInput";
+import "../../assets/styles/SpecInput.scss";
 
-function SpecInput({ inputList, setInputList }) {
+function SpecInput({
+  inputList,
+  setInputList,
+  className,
+  placeHolder,
+  labelValue,
+  type,
+  name,
+}) {
+
   const addNewInput = (array) => {
     const newArray = [...array];
     newArray.push({
@@ -16,26 +26,34 @@ function SpecInput({ inputList, setInputList }) {
     newArray.pop();
     setInputList(newArray);
   };
+  const handleChangeSpecInput = (e, input) => {
+    const { value } = e.target;
+    const newInput = {
+      id: input.id,
+      value: value,
+    };
+    const newInputList = [...inputList];
+    newInputList.splice(input.id, 1, newInput);
+    setInputList(newInputList);
+    if (!value) e.target.className = "form-control invalid";
+    else {
+      e.target.className = "form-control valid";
+    }
+  };
+
   return (
-    <div className="beneficial-container">
+    <div className="special-input-container">
       {inputList.map((input) => {
         return (
-          <div className="beneficial-input" key={input.id}>
+          <div className="special-input" key={input.id}>
             <ValidateInput
-              placeholder="Beneficial"
-              labelValue="Beneficial"
-              type="text"
-              required={true}
-              valueDefault={input.value}
-              handleChangeInput={(e) => {
-                const newInput = {
-                  id: input.id,
-                  value: e.target.value,
-                };
-                const newInputList = [...inputList];
-                newInputList.splice(input.id, 1, newInput);
-                setInputList(newInputList);
-              }}
+              name={name + input.id}
+              className={className}
+              placeHolder={placeHolder}
+              labelValue={labelValue}
+              type={type}
+              defaultValue={input.value}
+              handleChangeInput={(e) => handleChangeSpecInput(e, input)}
             />
             <i
               className="fas fa-plus-circle button-add-input"
@@ -53,5 +71,13 @@ function SpecInput({ inputList, setInputList }) {
     </div>
   );
 }
+SpecInput.defaultProps = {
+  inputList: [],
+  className: "form-control",
+  setInputList: propTypes.func,
+  placeHolder: "placeHolder",
+  labelValue: "labelValue",
+  type: "text",
+};
 
 export default SpecInput;

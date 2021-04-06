@@ -1,0 +1,26 @@
+.special-input-container {
+  position: relative;
+}
+.special-input {
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
+}
+
+.button-add-input {
+  font-size: 20px;
+  position: absolute;
+  bottom: 35%;
+  right: 5px;
+  color: rgb(85, 85, 255);
+  cursor: pointer;
+}
+.button-remove-input {
+  font-size: 20px;
+  bottom: 35%;
+  position: absolute;
+  right: 30px;
+  color: rgb(255, 94, 94);
+  cursor: pointer;
+}

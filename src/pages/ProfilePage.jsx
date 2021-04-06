@@ -1,135 +1,259 @@
 import "bootstrap-css-only/css/bootstrap.min.css";
-import { MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow } from "mdbreact";
+import { MDBBtn, MDBCol, MDBContainer, MDBRow } from "mdbreact";
 import "mdbreact/dist/css/mdb.css";
-import React, { useState } from "react";
-import "react-phone-input-2/lib/bootstrap.css";
-import "../assets/styles/ProfilePage.scss";
-import Select from "react-select";
+import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import "react-phone-input-2/lib/bootstrap.css";
+import { useDispatch } from "react-redux";
+import { submitProfileAction } from "../actions/userAction";
+import "../assets/styles/ProfilePage.scss";
+import {
+  countries,
+  regions,
+  regulatoryAML,
+  regulatorySec,
+} from "../components/Common/data";
+import ValidateInput from "../components/Common/ValidateInput";
+import SelectOption from "../components/ProfilePage/SelectOption";
 import SpecInput from "../components/ProfilePage/SpecInput";
-import ValidateInput from "../components/ProfilePage/ValidateInput";
+import { putAction } from "../services/api-service";
+import confirmEmail from "../utils/ConfirmEmail";
 
 function ProfilePage() {
-  const [phone, setPhone] = useState();
-  const [inputList, setInputList] = useState([
-    {
-      id: 0,
-      value: "",
-    },
-  ]);
+  const [districts, setDistricts] = useState([]);
 
-  console.log(inputList);
-  const options = [
-    { value: "vn", label: "Việt Nam" },
-    { value: "us", label: "Mĩ" },
-    { value: "el", label: "Anh" },
-  ];
+  const [data, setData] = useState({
+    entityLegalName: "",
+    dba: "",
+    tax_id: "",
+    website_url: "",
+    regulatory_aml: "",
+    regulatory_securities: "",
+    beneficial: [
+      {
+        id: 0,
+        value: "",
+      },
+    ],
+    phone_number: "",
+    email: "",
+    country: "",
+    state: "",
+    city: "",
+    street_address: "",
+    street_address_2: "",
+  });
 
-  const [value, setValue] = useState("");
-  const handleInput = (e) => {
-    setValue(e.target.value);
+  useEffect(() => {
+    regions.map((region) => {
+      if (region.title === data.country) {
+        setDistricts(region.labels);
+      }
+      return 0;
+    });
+  }, [data.country]);
+
+  const confirmBeneficial = (beneficial) => {
+    for (const ben of beneficial) {
+      if (ben.value === "") return false;
+    }
+    return true;
   };
-  console.log(value);
+
+  const handleInput = (event) => {
+    const { name, value } = event.target;
+    if (!value) {
+      setData({ ...data, [name]: value });
+      event.target.className = "form-control invalid";
+    } else {
+      if (name === "email") {
+        if (confirmEmail(value)) {
+          setData({ ...data, [name]: value });
+          event.target.className = "form-control valid";
+        } else {
+          setData({ ...data, [name]: value });
+          event.target.className = "form-control invalid";
+        }
+      } else {
+        setData({ ...data, [name]: value });
+        event.target.className = "form-control valid";
+      }
+    }
+  };
+
+  const dispatch = useDispatch();
+  const updateProfileAction = (data) => {
+    const action = submitProfileAction(data);
+    dispatch(action);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const url = "facebook.com";
+    const response = await putAction(url, data);
+    localStorage.setItem("1", JSON.stringify(data));
+    updateProfileAction(data);
+    console.log(response);
+  };
+
   return (
     <div>
       <MDBContainer>
-        <p className="header">STEP 1: COMPANY INFORMATION</p>
-        <hr />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, nulla.
-          Aperiam, rerum eligendi. Exercitationem illum qui officia, repellat a
-          magnam quidem. Culpa amet praesentium ullam laboriosam at laudantium,
-          magnam aperiam?
-        </p>
-        <form onSubmit={() => console.log("Submit")}>
+        <form className="profile-container" onSubmit={handleSubmit}>
+          <p className="header">STEP 1: COMPANY INFORMATION</p>
+          <hr />
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit,
+            nulla. Aperiam, rerum eligendi. Exercitationem illum qui officia,
+            repellat a magnam quidem. Culpa amet praesentium ullam laboriosam at
+            laudantium, magnam aperiam?
+          </p>
           <MDBRow>
-            <MDBCol md="6" xl="6">
+            <MDBCol md="6">
               <ValidateInput
-                placeholder="Entity Legal Name"
+                placeHolder="Entity Legal Name"
                 labelValue="Entity Legal Name"
-                type="text"
-                required={true}
-                handleChangeInput={(e) => handleInput(e)}
+                handleChangeInput={handleInput}
+                name="entityLegalName"
               />
               <ValidateInput
-                placeholder="DBA"
+                placeHolder="DBA"
                 labelValue="DBA"
-                type="text"
-                required={true}
-                handleChangeInput={(e) => handleInput(e)}
+                handleChangeInput={handleInput}
+                name="dba"
               />
               <ValidateInput
-                placeholder="Tax ID"
+                placeHolder="Tax ID"
                 labelValue="Tax ID"
-                type="text"
-                required={true}
-                handleChangeInput={(e) => handleInput(e)}
+                handleChangeInput={handleInput}
+                name="tax_id"
               />
               <ValidateInput
-                placeholder="http://"
-                labelValue="Tax ID"
-                valueDefault="http://"
+                placeHolder="http://"
+                labelValue="Website"
+                defaultValue="http://"
                 type="url"
-                required={true}
-                handleChangeInput={(e) => handleInput(e)}
+                name="website_url"
+                handleChangeInput={handleInput}
               />
-              <label>Regulatory AML</label>
-              <Select options={options} required />
+
+              <SelectOption
+                labelValue="Regulatory AML"
+                name="regulatory_aml"
+                data={regulatoryAML}
+                off={data.AML ? true : false}
+                handleChangeInput={handleInput}
+              />
+
               <br />
-              <label>Regulatory Securities</label>
-              <Select options={options} required />
+              <SelectOption
+                labelValue="Regulatory Securities"
+                name="regulatory_securities"
+                data={regulatorySec}
+                off={data.securities ? true : false}
+                handleChangeInput={handleInput}
+              />
+
               <br />
-              <SpecInput inputList={inputList} setInputList={setInputList} />
+              <SpecInput
+                inputList={data.beneficial}
+                setInputList={(newArray) => {
+                  // setInputList(inputList);
+                  setData({ ...data, beneficial: newArray });
+                }}
+                placeHolder="Beneficial"
+                labelValue="Beneficial"
+                name="beneficial"
+              />
             </MDBCol>
             <MDBCol md="6">
-              <label>Company Phone number</label>
+              <label htmlFor="phone-number" className="grey-text">
+                Company Phone number
+              </label>
               <PhoneInput
-                country={"us"}
-                value={phone}
-                onChange={(phone) => setPhone(phone)}
+                country={"vn"}
+                name="phone_number"
+                id="phone-number"
+                onChange={(phone) => setData({ ...data, phone_number: phone })}
               />
+
               <br />
               <ValidateInput
-                placeholder="Company E-mail"
+                placeHolder="Company E-mail"
                 labelValue="Company E-mail"
                 type="email"
-                required={true}
-                handleChangeInput={(e) => handleInput(e)}
+                name="email"
+                handleChangeInput={(event) => handleInput(event)}
               />
+
               <br />
               <strong>
                 <h2>ADDRESS</h2>
               </strong>
+
               <br />
-              <label>Country</label>
-              <Select options={options} required />
+              <SelectOption
+                labelValue="Country"
+                name="country"
+                data={countries}
+                off={data.country ? true : false}
+                handleChangeInput={handleInput}
+              />
+
               <br />
-              <label>Region</label>
-              <Select options={options} required />
+              <SelectOption
+                labelValue="Region"
+                name="state"
+                data={districts}
+                off={data.region ? true : false}
+                disabled={data.country ? false : true}
+                handleChangeInput={handleInput}
+              />
+
               <br />
               <ValidateInput
-                placeholder="Ha Noi"
+                name="city"
+                placeHolder="Ha Noi"
                 labelValue="City"
                 type="text"
-                required={true}
-                handleChangeInput={(e) => handleInput(e)}
+                handleChangeInput={(event) => handleInput(event)}
               />
               <ValidateInput
-                placeholder="Street, ..."
+                name="street_address"
+                placeHolder="Street, ..."
                 labelValue="Address Line 1 (required)"
                 type="text"
-                required={true}
-                handleChangeInput={(e) => handleInput(e)}
+                handleChangeInput={(event) => handleInput(event)}
               />
               <ValidateInput
-                placeholder="Street, ..."
+                name="street_address_2"
+                placeHolder="Street, ..."
                 labelValue="Address Line 2"
                 type="text"
                 required={false}
-                handleChangeInput={(e) => handleInput(e)}
+                handleChangeInput={(event) => handleInput(event)}
               />
-              <MDBBtn className="submit-button" type="submit">
+              <MDBBtn
+                className="submit-button"
+                type="submit"
+                disabled={
+                  data.entityLegalName &&
+                  data.dba &&
+                  data.tax_id &&
+                  data.website_url &&
+                  data.regulatory_aml &&
+                  data.regulatory_securities &&
+                  confirmBeneficial(data.beneficial) &&
+                  data.phone_number &&
+                  confirmEmail(data.email) &&
+                  data.country &&
+                  data.state &&
+                  data.city &&
+                  data.street_address
+                    ? false
+                    : true
+                }
+              >
                 Submit
               </MDBBtn>
             </MDBCol>
