@@ -1,24 +1,13 @@
 import axios from "axios";
 
-const postAction = async (url, data) => {
+const postServiceAction = async (url, data) => {
   const handleSuccess = (response) => {
-    const newData = {
-      username: data.username,
-      password: data.password,
-      remember_me: data.remember_me,
-      product: data.product,
-      uuid: response.data.uuid,
-      phone_number: response.data.phone_number,
-    };
-    console.log(response);
-    return newData;
+    return response;
   };
   const handleError = (error) => {
-    const errorString = error.response.data.error;
-    const errorMessage = errorString.substring(
-      errorString.lastIndexOf(":") + 2
-    );
-    return errorMessage;
+    // const errorString = error.response.data.error;
+    // const errorMessage = errorString.substring(errorString.lastIndexOf(":") + 2);
+    return error;
   };
 
   const response = await axios({
@@ -51,4 +40,4 @@ const putAction = async (url, data) => {
   return response;
 };
 
-export { postAction, putAction };
+export { postServiceAction, putAction };

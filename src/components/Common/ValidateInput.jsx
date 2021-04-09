@@ -2,17 +2,7 @@ import React from "react";
 import { propTypes } from "react-bootstrap/esm/Image";
 import "../../assets/styles/ValidateInput.scss";
 
-function ValidateInput({
-  placeHolder,
-  labelValue,
-  type,
-  required,
-  handleChangeInput,
-  defaultValue,
-  name,
-  className,
-  disabled,
-}) {
+function ValidateInput({ placeHolder, labelValue, type, required, handleChangeInput, handleBlurInput, defaultValue, name, className, disabled }) {
   return (
     <div>
       <label htmlFor={name} className="grey-text">
@@ -21,6 +11,7 @@ function ValidateInput({
       <input
         defaultValue={defaultValue}
         onChange={handleChangeInput}
+        onBlur={handleBlurInput}
         type={type}
         id={name}
         name={name}

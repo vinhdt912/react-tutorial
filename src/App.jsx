@@ -7,7 +7,7 @@ import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const [token, setToken] = useState();
-  if (token) {
+  if (!token) {
     return <LoginPage setToken={setToken} />;
   }
   return (
@@ -19,7 +19,6 @@ function App() {
       </BrowserRouter>
     </div>
   );
-
 }
 
 export default App;

@@ -4,15 +4,8 @@ import "mdbreact/dist/css/mdb.css";
 import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
-import { useDispatch } from "react-redux";
-import { submitProfileAction } from "../actions/userAction";
 import "../assets/styles/ProfilePage.scss";
-import {
-  countries,
-  regions,
-  regulatoryAML,
-  regulatorySec,
-} from "../components/Common/data";
+import { countries, regions, regulatoryAML, regulatorySec } from "../components/Common/data";
 import ValidateInput from "../components/Common/ValidateInput";
 import SelectOption from "../components/ProfilePage/SelectOption";
 import SpecInput from "../components/ProfilePage/SpecInput";
@@ -21,6 +14,12 @@ import confirmEmail from "../utils/ConfirmEmail";
 
 function ProfilePage() {
   const [districts, setDistricts] = useState([]);
+
+  // const dispatch = useDispatch();
+  // const updateProfileAction = (data) => {
+  //   const action = uploadProfileAction(data);
+  //   dispatch(action);
+  // };
 
   const [data, setData] = useState({
     entityLegalName: "",
@@ -81,18 +80,12 @@ function ProfilePage() {
     }
   };
 
-  const dispatch = useDispatch();
-  const updateProfileAction = (data) => {
-    const action = submitProfileAction(data);
-    dispatch(action);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = "facebook.com";
     const response = await putAction(url, data);
     localStorage.setItem("1", JSON.stringify(data));
-    updateProfileAction(data);
+    // updateProfileAction(data);
     console.log(response);
   };
 
@@ -103,39 +96,15 @@ function ProfilePage() {
           <p className="header">STEP 1: COMPANY INFORMATION</p>
           <hr />
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit,
-            nulla. Aperiam, rerum eligendi. Exercitationem illum qui officia,
-            repellat a magnam quidem. Culpa amet praesentium ullam laboriosam at
-            laudantium, magnam aperiam?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, nulla. Aperiam, rerum eligendi. Exercitationem illum qui officia, repellat a magnam
+            quidem. Culpa amet praesentium ullam laboriosam at laudantium, magnam aperiam?
           </p>
           <MDBRow>
             <MDBCol md="6">
-              <ValidateInput
-                placeHolder="Entity Legal Name"
-                labelValue="Entity Legal Name"
-                handleChangeInput={handleInput}
-                name="entityLegalName"
-              />
-              <ValidateInput
-                placeHolder="DBA"
-                labelValue="DBA"
-                handleChangeInput={handleInput}
-                name="dba"
-              />
-              <ValidateInput
-                placeHolder="Tax ID"
-                labelValue="Tax ID"
-                handleChangeInput={handleInput}
-                name="tax_id"
-              />
-              <ValidateInput
-                placeHolder="http://"
-                labelValue="Website"
-                defaultValue="http://"
-                type="url"
-                name="website_url"
-                handleChangeInput={handleInput}
-              />
+              <ValidateInput placeHolder="Entity Legal Name" labelValue="Entity Legal Name" handleChangeInput={handleInput} name="entityLegalName" />
+              <ValidateInput placeHolder="DBA" labelValue="DBA" handleChangeInput={handleInput} name="dba" />
+              <ValidateInput placeHolder="Tax ID" labelValue="Tax ID" handleChangeInput={handleInput} name="tax_id" />
+              <ValidateInput placeHolder="http://" labelValue="Website" defaultValue="http://" type="url" name="website_url" handleChangeInput={handleInput} />
 
               <SelectOption
                 labelValue="Regulatory AML"
@@ -170,12 +139,7 @@ function ProfilePage() {
               <label htmlFor="phone-number" className="grey-text">
                 Company Phone number
               </label>
-              <PhoneInput
-                country={"vn"}
-                name="phone_number"
-                id="phone-number"
-                onChange={(phone) => setData({ ...data, phone_number: phone })}
-              />
+              <PhoneInput country={"vn"} name="phone_number" id="phone-number" onChange={(phone) => setData({ ...data, phone_number: phone })} />
 
               <br />
               <ValidateInput
@@ -192,13 +156,7 @@ function ProfilePage() {
               </strong>
 
               <br />
-              <SelectOption
-                labelValue="Country"
-                name="country"
-                data={countries}
-                off={data.country ? true : false}
-                handleChangeInput={handleInput}
-              />
+              <SelectOption labelValue="Country" name="country" data={countries} off={data.country ? true : false} handleChangeInput={handleInput} />
 
               <br />
               <SelectOption
@@ -211,13 +169,7 @@ function ProfilePage() {
               />
 
               <br />
-              <ValidateInput
-                name="city"
-                placeHolder="Ha Noi"
-                labelValue="City"
-                type="text"
-                handleChangeInput={(event) => handleInput(event)}
-              />
+              <ValidateInput name="city" placeHolder="Ha Noi" labelValue="City" type="text" handleChangeInput={(event) => handleInput(event)} />
               <ValidateInput
                 name="street_address"
                 placeHolder="Street, ..."
